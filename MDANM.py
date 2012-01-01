@@ -8,7 +8,7 @@ class MDANM(ANM):
         '''
         if not isinstance(coords, np.ndarray):
             try:
-                coords = coords.getCoordinates()
+                coords = coords.getCoords()
             except AttributeError:
                 raise TypeError('coords must be an ndarray instance or '
                                 'must contain getCoordinates as an attribute')

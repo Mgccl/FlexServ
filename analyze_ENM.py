@@ -61,11 +61,11 @@ def main():
     native = ref_alpha.copy()
     pred = calphas.copy()
 
-    h = hamiltonian.EDENMHamiltonian( native.getCoordinates() )
-    Forw_E_ED = h.evaluate_energy( pred.getCoordinates())
+    h = hamiltonian.EDENMHamiltonian( native.getCoords() )
+    Forw_E_ED = h.evaluate_energy( pred.getCoords())
 
-    h = hamiltonian.EDENMHamiltonian( pred.getCoordinates() )
-    Back_E_ED = h.evaluate_energy( native.getCoordinates())
+    h = hamiltonian.EDENMHamiltonian( pred.getCoords() )
+    Back_E_ED = h.evaluate_energy( native.getCoords())
 
     rmsdal = aligner.EnergyAligner()
     align_results,native,pred = rmsdal.align_and_color(native,pred)
@@ -73,13 +73,13 @@ def main():
     prody.proteins.writePDB("color_pdb.pdb" ,pred)
     prody.proteins.writePDB("color_ref.pdb" ,native)
 
-    commands.getoutput("perl /Users/alberto/DillLab/flex/Scripts/align_CA_all_atom.pl color_pdb.pdb %s > AAcolor_pdb.pdb" % args.pdb)
-    commands.getoutput("perl /Users/alberto/DillLab/flex/Scripts/align_CA_all_atom.pl color_ref.pdb %s > AAcolor_ref.pdb" % args.reference)
-    to_run = 'vmd -size 1300 500 -eofexit </Users/alberto/DillLab/flex/Scripts/align_and_draw_ENM.tcl -args AAcolor_pdb.pdb AAcolor_ref.pdb'
+    commands.getoutput("perl /home/mgccl/FlexE/FlexServ/align_CA_all_atom.pl color_pdb.pdb %s > AAcolor_pdb.pdb" % args.pdb)
+    commands.getoutput("perl /home/mgccl/FlexE/FlexServ/align_CA_all_atom.pl color_ref.pdb %s > AAcolor_ref.pdb" % args.reference)
+    to_run = 'vmd -size 1300 500 -eofexit </home/mgccl/FlexE/FlexServ/align_and_draw_ENM.tcl -args AAcolor_pdb.pdb AAcolor_ref.pdb'
     out = commands.getoutput("tcsh -c '%s'" % to_run)
     commands.getoutput("convert -trim paper_fig.tga paper_fig_ener.png")
 
-    number_of_residues = ref.getNumOfResidues()
+    number_of_residues = ref.numResidues()
     rmsdED = calcRMSD(calphas,target=ref_alpha)
 
     print "%s %.2f %.2f %.2f " % (args.pdb,rmsdED,Forw_E_ED/number_of_residues,Back_E_ED/number_of_residues),

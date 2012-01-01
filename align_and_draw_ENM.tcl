@@ -86,7 +86,7 @@ proc draw_all {args} {
  	#color scale method BlkW
 	#color scale midpoint 0.0
 	#Draw the scale bar
-	source "/Applications/VMD\ 1.9.app/Contents/vmd/plugins/noarch/tcl/colorscalebar1.3/colorscalebar.tcl"
+	source "/usr/lib/vmd/plugins/noarch/tcl/colorscalebar1.3/colorscalebar.tcl"
 	::colorscalebar_tk_cb
 	::ColorScaleBar::color_scale_bar 0.8 0.05 1 1 0 100 5 8 0 -2.1 0.1 1 top 0 0 "Color Scale2:"
 	

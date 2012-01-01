@@ -84,8 +84,8 @@ class RMSDAligner(GenericAligner):
         h_prediction = prody.HierView(self._prediction)
 
         for (native_res, pred_res) in zip( h_native.iterResidues(), h_prediction.iterResidues() ):
-            native_coords = native_res.getCoordinates()
-            pred_coords = pred_res.getCoordinates()
+            native_coords = native_res.getCoords()
+            pred_coords = pred_res.getCoords()
 
             d = numpy.linalg.norm(native_coords - pred_coords)
             pred_res.setTempFactors(d)
@@ -106,8 +106,8 @@ class EnergyAligner(GenericAligner):
         Returns: the results, the native structure, and the aligned prediction.
         '''
         GenericAligner.align(self, native, prediction)
-        self._x = self._native.getCoordinates()
-        self._y = self._prediction.getCoordinates()
+        self._x = self._native.getCoords()
+        self._y = self._prediction.getCoords()
 
         self._anm = MDANM.MDANM('energy_align')
         self._anm.buildHessian(self._native)
@@ -135,13 +135,13 @@ class EnergyAligner(GenericAligner):
         Performs alignment and assigns energies to B-factor column.
         '''
         self.align(native, prediction)
-        h = hamiltonian.EDENMHamiltonian( self._native.getCoordinates() )
-        energy = h.evaluate_energy( self._prediction.getCoordinates() )
+        h = hamiltonian.EDENMHamiltonian( self._native.getCoords() )
+        energy = h.evaluate_energy( self._prediction.getCoords() )
         energy_matrix = h.get_energy_matrix()
         atom_energy = numpy.sum(energy_matrix, axis=0)
         hier_view = prody.HierView(self._prediction)
         for index, residue in enumerate( hier_view.iterResidues() ):
-            residue.setTempFactors( atom_energy[index] )
+            residue.setBetas( atom_energy[index] )
         return self._align_results, self._native, self._prediction
 
     def _do_translation(self):
